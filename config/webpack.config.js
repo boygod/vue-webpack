@@ -2,9 +2,10 @@ const path = require("path");
 const VueLoderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const webpack = require('webpack');
 module.exports= {
     entry:{
-        index:'./src/main.js',
+        index:path.resolve(__dirname ,"../src/main.js")
     },
     module: {
         rules: [
@@ -24,9 +25,12 @@ module.exports= {
             {
                 test:/\.js$/,
                 exclude: /(node_modules|bower_components)/,
-                use:[
-                    'babel-loader'
-                ]
+                use:{
+                    loader:'babel-loader',
+                    options:{
+                        presets: ['@babel/preset-env']
+                    }
+                }
             },
             {
                 test: /\.vue$/,
@@ -38,14 +42,17 @@ module.exports= {
     },
     plugins: [
         new VueLoderPlugin(),
-        new CleanWebpackPlugin(['dist']),
+        new CleanWebpackPlugin(['dist'],{
+            root:path.resolve(__dirname,"../")
+        }),
         new HtmlWebpackPlugin({
-            title: 'Output Management',
+            title: '首页',
             template: 'index.html',
             filename: 'index.html',
-            hash:true,
-            chunks: ["index"],
-        })
+            hash: true,
+            chunks: ["index"]
+        }),
+        new webpack.NamedModulesPlugin(),
     ]
 
 

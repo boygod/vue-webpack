@@ -1,9 +1,11 @@
 const merge = require('webpack-merge');
+const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const common = require('./webpack.config.js');
 module.exports = merge(common, {
+    mode:"production",
     output: {
-        path:  "/",
+        path:  path.resolve(__dirname ,"../dist"),
         filename: "[name].js"
     },
     devServer: {
@@ -14,13 +16,7 @@ module.exports = merge(common, {
         inline: true,
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            title: '测试啊',
-            template: 'index.html',
-            filename: 'index.html',
-            hash:true,
-            chunks: ["index"],
-        })
+    
     ],
     devtool: 'inline-source-map'
 });
